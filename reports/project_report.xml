@@ -1,0 +1,72 @@
+<odoo>
+    <record id="action_project_performance_report" model="ir.actions.report">
+        <field name="name">Project Performance Report</field>
+        <field name="model">project.management</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">project_management.project_performance_report</field>
+        <field name="report_file">project_performance_report.pdf</field>
+        <field name="print_report_name">'Project Performance Report'</field>
+        <field name="binding_model_id" ref="model_project_management" />
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="project_performance_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <div class="page" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333; line-height: 1.6; padding: 20px;">
+                    <header style="text-align: center; margin-bottom: 30px;">
+                        <h1 style="color: #337ab7; font-size: 2em; margin-bottom: 10px;">Project Performance Report</h1>
+                    </header>
+                    <section style="margin-bottom: 40px;">
+                        <h2 style="color: #0056b3; font-size: 1.5em;">Project: <t t-esc="doc.name"/></h2>
+                        <p><strong>Description:</strong> <t t-esc="doc.description"/></p>
+                        <p><strong>Status:</strong> <t t-esc="doc.status"/></p>
+                        <p><strong>Start Date:</strong> <t t-esc="doc.start_date"/></p>
+                        <p><strong>End Date:</strong> <t t-esc="doc.end_date"/></p>
+                    </section>
+                    <section>
+                        <h3 style="color: #0056b3; font-size: 1.3em; margin-bottom: 15px;">Tasks</h3>
+                        <table style="width: 100%; border-collapse: collapse; font-size: 0.9em;">
+                            <thead>
+                                <tr style="background-color: #337ab7; color: #fff;">
+                                    <th style="padding: 10px; border: 1px solid #ccc;">Task Name</th>
+                                    <th style="padding: 10px; border: 1px solid #ccc;">Status</th>
+                                    <th style="padding: 10px; border: 1px solid #ccc;">Assigned To</th>
+                                    <th style="padding: 10px; border: 1px solid #ccc;">Priority</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="completed_tasks" t-value="doc.tasks_ids.filtered(lambda t: t.status == 'done')"/>
+                                <t t-set="incomplete_tasks" t-value="doc.tasks_ids.filtered(lambda t: t.status != 'done')"/>
+
+                                <tr>
+                                    <td colspan="4" style="background-color: #d4edda; color: #155724; text-align: center; padding: 10px;"><strong>Completed Tasks</strong></td>
+                                </tr>
+                                <t t-foreach="completed_tasks" t-as="task">
+                                    <tr style="background-color: #f0fdf4;">
+                                        <td style="padding: 10px; border: 1px solid #ccc;"><t t-esc="task.name"/></td>
+                                        <td style="padding: 10px; border: 1px solid #ccc;"><t t-esc="task.status"/></td>
+                                        <td style="padding: 10px; border: 1px solid #ccc;"><t t-esc="task.assigned_to.name"/></td>
+                                        <td style="padding: 10px; border: 1px solid #ccc;"><t t-esc="task.priority"/></td>
+                                    </tr>
+                                </t>
+
+                                <tr>
+                                    <td colspan="4" style="background-color: #f8d7da; color: #721c24; text-align: center; padding: 10px;"><strong>Incomplete Tasks</strong></td>
+                                </tr>
+                                <t t-foreach="incomplete_tasks" t-as="task">
+                                    <tr style="background-color: #fef2f2;">
+                                        <td style="padding: 10px; border: 1px solid #ccc;"><t t-esc="task.name"/></td>
+                                        <td style="padding: 10px; border: 1px solid #ccc;"><t t-esc="task.status"/></td>
+                                        <td style="padding: 10px; border: 1px solid #ccc;"><t t-esc="task.assigned_to.name"/></td>
+                                        <td style="padding: 10px; border: 1px solid #ccc;"><t t-esc="task.priority"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>
