@@ -1,0 +1,99 @@
+<odoo>
+    <record id="project_management_view_tree" model="ir.ui.view">
+        <field name="name">project management tree view</field>
+        <field name="model">project.management</field>
+        <field name="arch" type="xml">
+            <tree multi_edit="1" class="header_custom">
+                <header>
+                    <button name="action_generate_excel_report" type="object" string="Export to Excel" class="btn-primary" icon="fa-file-excel-o"/>
+                </header>
+                <field name="name"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="status"/>
+                <field name="assigned_team"/>
+                <field name="tasks_ids" widget="many2many_tags"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="project_management_view_form" model="ir.ui.view">
+        <field name="name">project management view form</field>
+        <field name="model">project.management</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <header>
+                        <field name="status" widget="statusbar" />
+                    </header>
+                    <div class="oe_title">
+                        <label for="name" />
+                        <h1>
+                            <field name="name" required="1" />
+                        </h1>
+                    </div>
+                    <group string="Info">
+                        <field name="description"/>
+                    </group>
+                    <group string="Timing">
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                    </group>
+                    <group string="state">
+                        <field name="status"/>
+                        <field name="assigned_team" widget="many2many_tags"/>
+                    </group>
+                    <notebook>
+                        <page string="Tasks">
+                            <field name="tasks_ids">
+                                <tree editable="bottom">
+                                    <field name="name" />
+                                    <field name="description" />
+                                    <field name="assigned_to" />
+                                    <field name="priority" />
+                                    <field name="status" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" />
+                    <field name="activity_ids" widget="mail_activity" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="project_management_view_search" model="ir.ui.view">
+        <field name="name">project management search</field>
+        <field name="model">project.management</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <field name="assigned_team" />
+
+                <filter string="Planning" name="status_planning" domain="[('status', '=', 'planning')]" />
+                <filter string="In Progress" name="status_in_progress" domain="[('status', '=', 'in_progress')]" />
+                <filter string="Completed" name="status_completed" domain="[('status', '=', 'completed')]" />
+                <filter string="On Hold" name="status_on_hold" domain="[('status', '=', 'on_hold')]" />
+
+                <filter name="assigned_team" string="Assigned Teams" context="{'group_by': 'assigned_team'}" />
+            </search>
+        </field>
+    </record>
+
+
+    <record id="project_management_action" model="ir.actions.act_window">
+        <field name="name">Projects Management Action</field>
+        <field name="res_model">project.management</field>
+    </record>
+
+    <menuitem
+        id="project_menu_item"
+        name="Projects"
+        parent="project_management_menu"
+        action="project_management_action"
+    />
+</odoo>

@@ -1,0 +1,34 @@
+<odoo>
+    <record id="project_task_view_form" model="ir.ui.view">
+        <field name="name">project task view form</field>
+        <field name="model">project.task</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group string="Info">
+                        <field name="name"/>
+                        <field name="project_id"/>
+                        <field name="description"/>
+                    </group>
+                    <group string="State">
+                        <field name="assigned_to"/>
+                        <field name="priority"/>
+                        <field name="status"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="task_management_action" model="ir.actions.act_window">
+        <field name="name">Task Management Action</field>
+        <field name="res_model">project.task</field>
+    </record>
+
+    <menuitem
+        id="task_menu_item"
+        name="Tasks"
+        parent="project_management_menu"
+        action="task_management_action"
+    />
+</odoo>
