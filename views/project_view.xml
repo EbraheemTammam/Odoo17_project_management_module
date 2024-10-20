@@ -13,6 +13,7 @@
                 <field name="status"/>
                 <field name="assigned_team"/>
                 <field name="tasks_ids" widget="many2many_tags"/>
+                <field name="progress" widget="progressbar"/>
             </tree>
         </field>
     </record>
@@ -24,6 +25,9 @@
             <form>
                 <sheet>
                     <header>
+                        <group>
+                            <field name="progress" string="Time Passed" widget="progressbar" options="{'max_value': 100}" />
+                        </group>
                         <field name="status" widget="statusbar" />
                     </header>
                     <div class="oe_title">
@@ -84,6 +88,16 @@
         </field>
     </record>
 
+    <record id="ir_cron_project_progress_update" model="ir.cron">
+        <field name="name">Update Project Progress</field>
+        <field name="model_id" ref="model_project_management"/>
+        <field name="state">code</field>
+        <field name="code">model._compute_progress()</field>
+        <field name="active" eval="True"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall" eval="-1"/>
+    </record>
 
     <record id="project_management_action" model="ir.actions.act_window">
         <field name="name">Projects Management Action</field>
