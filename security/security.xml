@@ -1,0 +1,24 @@
+<odoo>
+    <record id="admins_group" model="res.groups">
+        <field name="name">Admin</field>
+    </record>
+
+    <record id="project_managers_group" model="res.groups">
+        <field name="name">Project Manager</field>
+    </record>
+
+    <record id="team_members_group" model="res.groups">
+        <field name="name">Team Member</field>
+    </record>
+
+    <record id="team_member_task_rule" model="ir.rule">
+        <field name="name">Team Member Task Access</field>
+        <field name="model_id" ref="project_management.model_project_task"/>
+        <field name="domain_force">[('assigned_to', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('project_management.team_members_group'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+</odoo>
