@@ -13,7 +13,6 @@
         'views/base_menu.xml',
         'views/project_view.xml',
         'views/task_view.xml',
-        'views/project_dashboard.xml',
         'reports/project_report.xml',
     ],
     "assets": {
